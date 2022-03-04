@@ -1,0 +1,86 @@
+#include<iostream>
+using namespace std;
+int top=0;
+char* pretopost(char pre[20],int i);
+int op(char ch);
+void  push(char t[20],char pres[],char x);
+void pop(char pre[20],int i);
+char topp(char  pre[20],int i);
+
+int main()
+{
+    char pre[20];
+    int n=10;
+    for(int i=0;i<n;i++)
+    {
+        cin>>pre[i];
+    }
+    cout<<"Postfix"<<"\t"<<pretopost(pre,n);
+    return 0;
+}
+char*  pretopost(char pre[20],int n)
+{
+    char s1,s2,t[20]={0,1,2},c='$';
+    int i;
+    for( i=n-1;i>=0;i--)
+    {
+        if(op(pre[i]))
+        {
+            s1=topp(pre,i);
+            pop(pre,--i);
+            s2=topp(pre,i);
+            pop(pre,--i);
+            i+=2;
+            t[0]=s1;
+            t[1]=s2;
+            t[2]=pre[i];
+            
+            push(t,pre,c);
+            top+=2;
+        }
+        else
+        {
+            push(t,pre,pre[i]);
+        }
+    }
+    return pre;
+    
+}
+
+int op(char ch)
+{
+    if(ch=='+'||ch=='-'||ch=='*'||ch=='/')
+    {
+        return 1;
+    }
+    else
+    {
+        return 0;
+    }
+}
+
+void  push(char t[20],char pre[20],char x)
+{
+    char pres[10];
+    
+    if(x=='$')
+    { for(int i=0;i<2;i++)
+        {
+            pres[top++]=t[i];
+        }
+    }
+    else
+    {
+        pres[top++]=x;
+    }
+}
+
+void pop(char pre[20],int i)
+{
+    pres[i--];
+}
+
+char topp(char  pre[20],int i)
+{
+    return pres[i-1];
+}
